@@ -2,7 +2,9 @@ fn main() {
     l61();
     l61b();
     l62();
-    l63();
+    l64();
+    l65();
+    l66();
 }
 
 fn l61() {
@@ -72,12 +74,18 @@ fn l62() {
     c.call();
 }
 
-fn l63() {
+fn l64() {
+    #[derive(Debug)]
+    enum UsState {
+        Alabama,
+        Alaska
+    }
+
     enum Coin {
         Penny,
         Nickel,
         Dime,
-        Quarter,
+        Quarter(UsState),
     }
 
     fn value_in_cents(coin: Coin) -> u8 {
@@ -85,17 +93,60 @@ fn l63() {
             Coin::Penny => 1,
             Coin::Nickel => 5,
             Coin::Dime => 10,
-            Coin::Quarter => 25,
+            Coin::Quarter(state) => {
+                println!("State quarter from {:?}!", state);
+                25
+            },
         }
     }
 
     let penny = value_in_cents(Coin::Penny);
     let nickel = value_in_cents(Coin::Nickel);
     let dime = value_in_cents(Coin::Dime);
-    let quarter = value_in_cents(Coin::Quarter);
+    let quarter_alabama = value_in_cents(Coin::Quarter(UsState::Alabama));
+    let quarter_alaska = value_in_cents(Coin::Quarter(UsState::Alaska));
 
     println!("Penny is {}.", penny);
     println!("Nickel is {}.", nickel);
     println!("Dime is {}.", dime);
-    println!("Quarter is {}.", quarter);
+    println!("Quarter in Alabama is {}.", quarter_alabama);
+    println!("Quarter in Alaska is {}.", quarter_alaska);
+}
+
+fn l65() {
+    fn plus_one(x: Option<i32>) -> Option<i32> {
+        match x {
+            None => None,
+            Some(i) => Some(i + 1)
+        }
+    }
+
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
+
+    println!("Five is {:?}.", five);
+    println!("Six is {:?}.", six);
+    println!("None is {:?}.", none);
+}
+
+fn l66() {
+    let some_u8_value = Some(3);
+
+    match some_u8_value {
+        Some(3) => println!("three"),
+        _ => (),
+    }
+
+    if let Some(3) = some_u8_value {
+        println!("three");
+    } else {
+        println!("not three");
+    }
+
+    if let Some(2) = some_u8_value {
+        println!("two");
+    } else {
+        println!("not two");
+    }
 }
